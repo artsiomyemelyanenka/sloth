@@ -290,6 +290,18 @@ class AnnotationScene(QGraphicsScene):
         for item in self.items():
             item.setSelected(True)
 
+    def selectAllItemsOfLabels(self, labels):
+        last_selected = None
+        for item in self.items():
+            if isinstance(item, RectItem):
+                annotations = item.modelItem().getAnnotations()
+                if annotations['class'] in labels:
+                    item.setSelected(True)
+                    last_selected = item
+                else:
+                    item.setSelected(False)
+        return last_selected
+
     def keyPressEvent(self, event):
         LOG.debug("keyPressEvent %s" % event)
 

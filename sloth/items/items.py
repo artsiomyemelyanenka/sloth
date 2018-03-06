@@ -469,7 +469,8 @@ class RectItem(BaseItem):
               Qt.Key_Right: (step, 0),
               Qt.Key_Up:    (0, -step),
               Qt.Key_Down:  (0, step),
-             }.get(event.key(), None)
+              Qt.Key: (0, step)
+              }.get(event.key(), None)
         if ds is not None:
             if event.modifiers() & Qt.ControlModifier:
                 rect = self._rect.adjusted(*((0, 0) + ds))
@@ -478,6 +479,21 @@ class RectItem(BaseItem):
             self._updateRect(rect)
             self.updateModel()
             event.accept()
+        ds = {Qt.Key_A: (0, step, 0, 0),
+              Qt.Key_Q: (0, -step, 0, 0),
+              Qt.Key_X:  (0, 0, 0, step),
+              Qt.Key_S: (0, 0, 0, -step),
+              Qt.Key_U: (-step, 0, 0, 0),
+              Qt.Key_I: (step, 0, 0, 0),
+              Qt.Key_O: (0, 0, -step, 0),
+              Qt.Key_P: (0, 0, step, 0)
+              }.get(event.key(), None)
+        if ds is not None:
+            rect = self._rect.adjusted(* ds)
+            self._updateRect(rect)
+            self.updateModel()
+            event.accept()
+
 
 
 class MultiPointItem(BaseItem):

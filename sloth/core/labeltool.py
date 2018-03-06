@@ -335,6 +335,18 @@ class LabelTool(QObject):
         if image != self._current_image:
             self._current_image = image
             self.currentImageChanged.emit()
+        if config.AUTOSELECT is not None:
+            self.autoselect(config.AUTOSELECT)
+
+    def autoselect(self, labels):
+        if labels is None:
+            return
+        if self._mainwindow is None:
+            return
+        selected = self._mainwindow.scene.selectAllItemsOfLabels(labels)
+        if selected is not None:
+            self._mainwindow.view.fitItemInView(selected)
+
 
     def getImage(self, item):
         if item['class'] == 'frame':

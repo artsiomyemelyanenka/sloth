@@ -46,6 +46,19 @@ class GraphicsView(QGraphicsView):
         if new_scale != old_scale:
             self.scaleChanged.emit(new_scale)
 
+
+    def fitItemInView(self, item):
+        if self.scene() is None:
+            return
+        old_scale = self.getScale()
+        QGraphicsView.fitInView(self, item, Qt.KeepAspectRatio)
+        new_scale = self.getScale()
+        new_scale /= 1.3
+        self.setTransform(QTransform.fromScale(new_scale, new_scale))
+
+        if new_scale != old_scale:
+            self.scaleChanged.emit(new_scale)
+
     def setScene(self, scene):
         QGraphicsView.setScene(self, scene)
         #self.setScaleAbsolute(1)

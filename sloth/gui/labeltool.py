@@ -129,7 +129,7 @@ class MainWindow(QMainWindow):
 
         img = self.labeltool.getImage(new_image)
 
-        if img == None:
+        if img is None:
             self.controls.setFilename("")
             self.selectionmodel.setCurrentIndex(new_image.index(), QItemSelectionModel.ClearAndSelect|QItemSelectionModel.Rows)
             return
@@ -269,6 +269,8 @@ class MainWindow(QMainWindow):
         self.initOptions()
         self.initAnnotationMenu()
 
+        self.initAutoSelect(config.AUTOSELECT)
+
         self.treeview = AnnotationTreeView()
         self.treeview.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
         self.ui.dockAnnotations.setWidget(self.treeview)
@@ -308,6 +310,12 @@ class MainWindow(QMainWindow):
 
         ## connect action signals
         self.connectActions()
+
+    def initAutoSelect(self, AUTOSELECT):
+        if AUTOSELECT is not None:
+            self._autoselect = AUTOSELECT
+        else:
+            self._autoselect = None
 
     def connectActions(self):
         ## File menu
